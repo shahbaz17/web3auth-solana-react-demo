@@ -234,7 +234,7 @@ function App() {
       return
     }
     const solanaWallet = new SolanaWallet(provider)
-    const msg = Buffer.from('Solana Hacker House Dilli', 'utf8')
+    const msg = Buffer.from('Web3Auth x Solana Message', 'utf8')
     const result = await solanaWallet.signMessage(msg)
     uiConsole(result)
   }
