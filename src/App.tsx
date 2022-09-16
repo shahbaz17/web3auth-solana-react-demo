@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Web3Auth} from '@web3auth/web3auth'
+import {CHAIN_NAMESPACES, SafeEventEmitterProvider} from '@web3auth/base'
 import {SolanaPrivateKeyProvider, SolanaWallet} from '@web3auth/solana-provider'
 import {
   Connection,
@@ -9,14 +10,17 @@ import {
   Transaction,
 } from '@solana/web3.js'
 import './App.css'
+import React from 'react'
 
 const clientId =
   process.env.REACT_APP_CLIENT_ID ||
   'BBP_6GOu3EJGGws9yd8wY_xFT0jZIWmiLMpqrEMx36jlM61K9XRnNLnnvEtGpF-RhXJDGMJjL-I-wTi13RcBBOo' // get the clientId from https://dashboard.web3auth.io
 
 function App() {
-  const [web3auth, setWeb3auth] = useState(null)
-  const [provider, setProvider] = useState(null)
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null)
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null,
+  )
 
   useEffect(() => {
     const init = async () => {
@@ -24,7 +28,7 @@ function App() {
         const web3auth = new Web3Auth({
           clientId,
           chainConfig: {
-            chainNamespace: 'solana',
+            chainNamespace: CHAIN_NAMESPACES.SOLANA,
             chainId: '0x3', // Please use 0x1 for Mainnet, 0x2 for Testnet, 0x3 for Devnet
             rpcTarget: 'https://api.devnet.solana.com',
             displayName: 'Solana Devnet',
@@ -62,7 +66,7 @@ function App() {
       uiConsole('web3auth not initialized yet')
       return
     }
-    const privateKey = await web3auth.provider.request({
+    const privateKey = await web3auth?.provider?.request({
       method: 'solanaPrivateKey',
     })
     uiConsole(privateKey)
@@ -87,11 +91,11 @@ function App() {
   }
 
   const parseToken = async () => {
-    const idToken = await web3auth.authenticateUser()
-    console.log(idToken.idToken)
-    const base64Url = idToken.idToken.split('.')[1]
-    const base64 = base64Url.replace('-', '+').replace('_', '/')
-    const result = JSON.parse(window.atob(base64))
+    const idToken = await web3auth?.authenticateUser()
+    console.log(idToken?.idToken)
+    const base64Url = idToken?.idToken.split('.')[1]
+    const base64 = base64Url?.replace('-', '+').replace('_', '/')
+    const result = JSON.parse(window.atob(base64 as string))
     uiConsole(result)
   }
 
@@ -124,7 +128,7 @@ function App() {
     // Get user's Solana public address
     const accounts = await solanaWallet.requestAccounts()
 
-    const connectionConfig = await solanaWallet.request({
+    const connectionConfig: any = await solanaWallet.request({
       method: 'solana_provider_config',
       params: [],
     })
@@ -142,7 +146,7 @@ function App() {
       return
     }
     const solanaWallet = new SolanaWallet(provider)
-    const connectionConfig = await solanaWallet.request({
+    const connectionConfig: any = await solanaWallet.request({
       method: 'solana_provider_config',
       params: [],
     })
@@ -166,37 +170,37 @@ function App() {
     uiConsole(signedTx.signature)
   }
 
-  const signallTransaction = async () => {
-    if (!provider) {
-      uiConsole('provider not initialized yet')
-      return
-    }
-    const solanaWallet = new SolanaWallet(provider)
+  // const signallTransaction = async () => {
+  //   if (!provider) {
+  //     uiConsole('provider not initialized yet')
+  //     return
+  //   }
+  //   const solanaWallet = new SolanaWallet(provider)
 
-    const connectionConfig = await solanaWallet.request({
-      method: 'solana_provider_config',
-      params: [],
-    })
+  //   const connectionConfig: any = await solanaWallet.request({
+  //     method: 'solana_provider_config',
+  //     params: [],
+  //   })
 
-    const connection = new Connection(connectionConfig.rpcTarget)
+  //   const connection = new Connection(connectionConfig.rpcTarget)
 
-    const accounts = await solanaWallet.requestAccounts()
-    const blockhash = (await connection.getRecentBlockhash('finalized'))
-      .blockhash
-    const TransactionInstruction = SystemProgram.transfer({
-      fromPubkey: new PublicKey(accounts[0]),
-      toPubkey: new PublicKey(accounts[0]),
-      lamports: 0.01 * LAMPORTS_PER_SOL,
-    })
-    const transaction = new Transaction({
-      recentBlockhash: blockhash,
-      feePayer: new PublicKey(accounts[0]),
-    }).add(TransactionInstruction)
+  //   const accounts = await solanaWallet.requestAccounts()
+  //   const blockhash = (await connection.getRecentBlockhash('finalized'))
+  //     .blockhash
+  //   const TransactionInstruction = SystemProgram.transfer({
+  //     fromPubkey: new PublicKey(accounts[0]),
+  //     toPubkey: new PublicKey(accounts[0]),
+  //     lamports: 0.01 * LAMPORTS_PER_SOL,
+  //   })
+  //   const transaction = new Transaction({
+  //     recentBlockhash: blockhash,
+  //     feePayer: new PublicKey(accounts[0]),
+  //   }).add(TransactionInstruction)
 
-    const signedTx = await solanaWallet.signAllTransactions(transaction)
-    console.log(signedTx.signature)
-    uiConsole(signedTx.signature)
-  }
+  //   const signedTx = await solanaWallet.signAllTransactions(transaction)
+  //   console.log(signedTx.signature)
+  //   uiConsole(signedTx.signature)
+  // }
 
   const signandsendTransaction = async () => {
     if (!provider) {
@@ -205,7 +209,7 @@ function App() {
     }
     const solanaWallet = new SolanaWallet(provider)
 
-    const connectionConfig = await solanaWallet.request({
+    const connectionConfig: any = await solanaWallet.request({
       method: 'solana_provider_config',
       params: [],
     })
@@ -245,7 +249,7 @@ function App() {
       return
     }
 
-    const privateKey = await web3auth.provider.request({
+    const privateKey = await provider.request({
       method: 'solanaPrivateKey',
     })
     console.log(privateKey)
@@ -254,28 +258,29 @@ function App() {
       await SolanaPrivateKeyProvider.getProviderInstance({
         chainConfig: {
           rpcTarget: 'https://api.devnet.solana.com',
+          blockExplorer: 'https://explorer.solana.com/?cluster=devnet',
           chainId: '0x3',
           displayName: 'solana',
           ticker: 'SOL',
           tickerName: 'Solana',
         },
-        privKey: privateKey,
+        privKey: privateKey as string,
       })
 
-    console.log(solanaPrivateProvider.provider)
+    console.log(solanaPrivateProvider)
 
     if (!solanaPrivateProvider) {
       uiConsole('provider not initialized yet')
       return
     }
 
-    const solanaWallet = new SolanaWallet(solanaPrivateProvider.provider)
+    const solanaWallet = new SolanaWallet(solanaPrivateProvider.provider as any)
     const msg = Buffer.from('Web3Auth x Solana', 'utf8')
     const result = await solanaWallet.signMessage(msg)
     uiConsole(result)
   }
 
-  function uiConsole(...args) {
+  function uiConsole(...args: any) {
     const el = document.querySelector('#console>p')
     if (el) {
       el.innerHTML = JSON.stringify(args || {}, null, 2)
@@ -315,11 +320,11 @@ function App() {
             Sign a Transaction
           </button>
         </div>
-        <div>
+        {/* <div>
           <button onClick={signallTransaction} className="card">
             Sign all Transaction
           </button>
-        </div>
+        </div> */}
         <div>
           <button onClick={signandsendTransaction} className="card">
             Sign and Send Transaction
