@@ -1,13 +1,10 @@
-# Web3Auth x ETH x React Demo Application
+# Web3Auth x Solana x React Demo Application
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/shahbaz17/web3auth-eth-react-demo.git
-cd web3auth-eth-react-demo
-mv .env.example .env.local
-# enter REACT_APP_CLIENT_ID from https://dashboard.web3auth.io
-# enter REACT_APP_INFURA_ID from https://infura.io
+git clone https://github.com/shahbaz17/web3auth-solana-react-demo.git
+cd web3auth-solana-react-demo
 npm install
 npm start
 ```

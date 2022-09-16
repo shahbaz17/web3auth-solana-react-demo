@@ -372,7 +372,7 @@ function App() {
 
       <footer className="footer">
         <a
-          href="https://github.com/shahbaz17/web3auth-eth-react-demo"
+          href="https://github.com/shahbaz17/web3auth-solana-react-demo"
           target="_blank"
           rel="noopener noreferrer"
         >
