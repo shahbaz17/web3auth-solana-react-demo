@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Web3Auth} from '@web3auth/web3auth'
+import {OpenloginAdapter} from '@web3auth/openlogin-adapter'
 import {CHAIN_NAMESPACES, SafeEventEmitterProvider} from '@web3auth/base'
 import {SolanaPrivateKeyProvider, SolanaWallet} from '@web3auth/solana-provider'
 import {
@@ -37,6 +38,13 @@ function App() {
             tickerName: 'Solana Token',
           },
         })
+
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            curve: 'ed25519',
+          },
+        })
+        web3auth.configureAdapter(openloginAdapter)
 
         setWeb3auth(web3auth)
 
