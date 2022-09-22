@@ -39,13 +39,6 @@ function App() {
           },
         })
 
-        const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            curve: 'secp256k1',
-          },
-        })
-        web3auth.configureAdapter(openloginAdapter)
-
         setWeb3auth(web3auth)
 
         await web3auth.initModal()
