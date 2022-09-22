@@ -145,7 +145,7 @@ function App() {
 
     // Fetch the balance for the specified public key
     const balance = await connection.getBalance(new PublicKey(accounts[0]))
-    uiConsole(balance)
+    uiConsole(balance / 1000000000)
   }
 
   const signaTransaction = async () => {
@@ -175,7 +175,7 @@ function App() {
     }).add(TransactionInstruction)
 
     const signedTx = await solanaWallet.signTransaction(transaction)
-    uiConsole(signedTx.signature)
+    uiConsole(signedTx?.signature?.toString('hex'))
   }
 
   // const signallTransaction = async () => {
@@ -248,7 +248,7 @@ function App() {
     const solanaWallet = new SolanaWallet(provider)
     const msg = Buffer.from('Web3Auth x Solana Message', 'utf8')
     const result = await solanaWallet.signMessage(msg)
-    uiConsole(result)
+    uiConsole(Buffer.from(result).toString('hex'))
   }
 
   const signSolanaMessage = async () => {
@@ -285,7 +285,7 @@ function App() {
     const solanaWallet = new SolanaWallet(solanaPrivateProvider.provider as any)
     const msg = Buffer.from('Web3Auth x Solana', 'utf8')
     const result = await solanaWallet.signMessage(msg)
-    uiConsole(result)
+    uiConsole(Buffer.from(result).toString('hex'))
   }
 
   function uiConsole(...args: any) {
