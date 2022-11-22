@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Web3Auth } from '@web3auth/web3auth';
+import { Web3Auth } from '@web3auth/modal';
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from '@web3auth/base';
 import {
 	SolanaPrivateKeyProvider,
